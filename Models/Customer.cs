@@ -7,7 +7,7 @@ using WebApiPractice.Models.Base;
 
 namespace WebApiPractice.Models
 {
-    public class TodoItem : Entity
+    public class Customer : Entity
     {
 
     }
