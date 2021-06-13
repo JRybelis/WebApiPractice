@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WebApiPractice.Data;
 using WebApiPractice.Models;
 
 namespace WebApiPractice.Controllers
@@ -12,35 +13,35 @@ namespace WebApiPractice.Controllers
     [Route("[controller]")]
     public class TodosController : ControllerBase
     {
-        private List<TodoItem> Items = new List<TodoItem>();
+        private readonly DataService _dataService;
 
-        public TodosController()
+        public TodosController(DataService dataService)
         {
-
+            _dataService = dataService;
         }
 
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            var item = Items.FirstOrDefault(i => i.Id == id);
-            if (item != null)
+            var item = _dataService.Items.FirstOrDefault(i => i.Id == id);
+            if (item == null)
             {
                 throw new KeyNotFoundException();
             }
-            Items.Remove(item);
+            _dataService.Items.Remove(item);
         }
         
         [HttpGet]
         public List<TodoItem> GetAll()
         {
-            return Items;
+            return _dataService.Items;
         }
 
         [HttpGet("{id}")]
         public TodoItem GetById(int id)
         {
-            var item = Items.FirstOrDefault(i => i.Id == id);
-            if (item != null)
+            var item = _dataService.Items.FirstOrDefault(i => i.Id == id);
+            if (item == null)
             {
                 throw new KeyNotFoundException();
             }
@@ -50,19 +51,19 @@ namespace WebApiPractice.Controllers
         [HttpPost]
         public void Create(TodoItem item)
         {
-            Items.Add(item);
+            _dataService.Items.Add(item);
         }
 
         [HttpPut]
         public void Update(TodoItem item)
         {
-            var itemToReplace = Items.FirstOrDefault(i => i.Id == item.Id);
-            if (item != null)
+            var itemToReplace = _dataService.Items.FirstOrDefault(i => i.Id == item.Id);
+            if (item == null)
             {
                 throw new KeyNotFoundException();
             }
 
-            Items[item.Id] = item;
+            _dataService.Items[item.Id] = item;
         }
     };
 }
