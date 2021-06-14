@@ -16,6 +16,7 @@ namespace WebApiPractice.Data
             Items = new List<TodoItem>();
             Customers = new List<Customer>();
         }
+
     }
 
 }
